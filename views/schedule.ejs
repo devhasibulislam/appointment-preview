@@ -108,7 +108,7 @@
               />
             </svg>
 
-            2 hour meeting
+            <%= (bookingData.howLongMeetingFor / 3600) %> hour meeting
           </p>
         </div>
 
@@ -128,44 +128,40 @@
     </div>
 
     <script>
-            document.addEventListener("DOMContentLoaded", function () {
-        const bookingData = <%- JSON.stringify(bookingData) %>; // Embed booking data
+      document.addEventListener("DOMContentLoaded", function () {
+        const bookingData = <%- JSON.stringify(bookingData) %>;
+        const selectSlotBookingCapacity = bookingData.selectSlotBookingCapacity || 1; // Limit selection
         const dayCards = document.querySelectorAll(".border.rounded.px-4.py-2");
         const timeSlotContainer = document.getElementById("timeSlotContainer");
         const todayBtn = document.getElementById("todayBtn");
         const dateDisplay = document.getElementById("dateDisplay");
+        let selectedSlots = []; // Store selected slots
 
-        // Hide time slots initially
         timeSlotContainer.style.display = "none";
 
-        // Get today's day in uppercase (e.g., "MON", "TUE")
         const today = new Date().toLocaleDateString("en-US", { weekday: "short" }).toUpperCase();
-
-        // Find today's availability from `bookingData`
         const todayData = bookingData.timetableAvailability.find(day => day.day.slice(0, 3).toUpperCase() === today);
 
-        // Disable today button if today is not available
         if (!todayData) {
           todayBtn.disabled = true;
           todayBtn.classList.add("opacity-50", "cursor-not-allowed");
         }
 
-        // Function to clear active states
         function clearActiveStates() {
           dayCards.forEach(card => {
             card.classList.remove("border-blue-500", "bg-blue-100/50");
           });
         }
 
-        // Function to display time slots
         function displayTimeSlots(dayData) {
           if (!dayData || dayData.timeSlots.length === 0) {
-            timeSlotContainer.style.display = "none"; // Hide time slots if unavailable
+            timeSlotContainer.style.display = "none";
             return;
           }
 
-          timeSlotContainer.innerHTML = ""; // Clear previous slots
-          timeSlotContainer.style.display = "grid"; // Show time slots container
+          timeSlotContainer.innerHTML = "";
+          timeSlotContainer.style.display = "grid";
+          selectedSlots = []; // Reset selection on new day selection
 
           dayData.timeSlots.forEach(slot => {
             const button = document.createElement("button");
@@ -175,22 +171,40 @@
               "cursor-pointer"
             );
 
-            // Add disabled state if booked
             if (slot.isBooked) {
               button.classList.add("opacity-50", "cursor-not-allowed");
               button.disabled = true;
             }
 
             button.textContent = slot.startTime;
+            button.dataset.startTime = slot.startTime; // Store time for tracking
+
+            button.addEventListener("click", function () {
+              handleSlotSelection(button);
+            });
+
             timeSlotContainer.appendChild(button);
           });
         }
 
-        // Today button event
-        todayBtn.addEventListener("click", function () {
-          if (!todayData) return; // Stop if no available slots today
+        function handleSlotSelection(button) {
+          const slotTime = button.dataset.startTime;
 
-          // Highlight today's date card
+          if (selectedSlots.includes(slotTime)) {
+            selectedSlots = selectedSlots.filter(time => time !== slotTime);
+            button.classList.remove("bg-blue-500", "text-white");
+            button.classList.add("bg-blue-100/50");
+          } else {
+            if (selectedSlots.length < selectSlotBookingCapacity) {
+              selectedSlots.push(slotTime);
+              button.classList.add("bg-blue-500", "text-white");
+              button.classList.remove("bg-blue-100/50");
+            }
+          }
+        }
+
+        todayBtn.addEventListener("click", function () {
+          if (!todayData) return;
           clearActiveStates();
           dayCards.forEach(card => {
             if (card.querySelector(".font-medium").textContent.trim() === today) {
@@ -198,19 +212,13 @@
             }
           });
 
-          // Update date display
           dateDisplay.textContent = new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
-
-          // Show today's time slots
           displayTimeSlots(todayData);
         });
 
-        // Event listener for manual date selection
         dayCards.forEach(card => {
           card.addEventListener("click", function () {
             const selectedDay = card.querySelector(".font-medium").textContent.trim();
-
-            // Find the selected day's time slots
             const dayData = bookingData.timetableAvailability.find(day =>
               day.day.startsWith(selectedDay)
             );

@@ -38,6 +38,7 @@ app.get("/schedule", async (req, res) => {
           bookingPageTitle
           profileLogo
           selectSlotBookingCapacity
+          howLongMeetingFor
           timetableAvailability {
             day
             timeSlots {
