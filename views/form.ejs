@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exkoo CRM - Appointment Preview</title>
+
+    <!-- Google Fonts (Poppins) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS CDN (v4.0.0) -->
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+
+    <!-- Custom CSS -->
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gray-100 p-6 flex flex-col justify-center items-center h-screen w-screen"
+  >
+    <div
+      class="w-lg bg-white rounded-lg shadow-md p-6 flex flex-col gap-6 overflow-y-scroll"
+    >
+      <!-- Mentor Info -->
+      <div class="flex items-start gap-2">
+        <img
+          src="https://i.pravatar.cc/150"
+          alt="Mentor"
+          class="w-12 h-12 rounded-full"
+        />
+        <div class="flex flex-col gap-2">
+          <h3 class="text-lg font-semibold">Talk with the mentor (Arman)</h3>
+          <div class="flex flex-col gap-1">
+            <div class="flex items-center gap-1 text-gray-600">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 16 16"
+                fill="currentColor"
+                class="size-4 text-blue-500"
+              >
+                <path
+                  d="M5.75 7.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5ZM7.25 8.25A.75.75 0 0 1 8 7.5h2.25a.75.75 0 0 1 0 1.5H8a.75.75 0 0 1-.75-.75ZM5.75 9.5a.75.75 0 0 0 0 1.5H8a.75.75 0 0 0 0-1.5H5.75Z"
+                />
+                <path
+                  fill-rule="evenodd"
+                  d="M4.75 1a.75.75 0 0 0-.75.75V3a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2V1.75a.75.75 0 0 0-1.5 0V3h-5V1.75A.75.75 0 0 0 4.75 1ZM3.5 7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v4.5a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1V7Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              <span class="text-xs">Friday, November 15th, 2025</span>
+            </div>
+            <div class="flex items-center gap-1 text-gray-600">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 16 16"
+                fill="currentColor"
+                class="size-4 text-blue-500"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M3.757 4.5c.18.217.376.42.586.608.153-.61.354-1.175.596-1.678A5.53 5.53 0 0 0 3.757 4.5ZM8 1a6.994 6.994 0 0 0-7 7 7 7 0 1 0 7-7Zm0 1.5c-.476 0-1.091.386-1.633 1.427-.293.564-.531 1.267-.683 2.063A5.48 5.48 0 0 0 8 6.5a5.48 5.48 0 0 0 2.316-.51c-.152-.796-.39-1.499-.683-2.063C9.09 2.886 8.476 2.5 8 2.5Zm3.657 2.608a8.823 8.823 0 0 0-.596-1.678c.444.298.842.659 1.182 1.07-.18.217-.376.42-.586.608Zm-1.166 2.436A6.983 6.983 0 0 1 8 8a6.983 6.983 0 0 1-2.49-.456 10.703 10.703 0 0 0 .202 2.6c.72.231 1.49.356 2.288.356.798 0 1.568-.125 2.29-.356a10.705 10.705 0 0 0 .2-2.6Zm1.433 1.85a12.652 12.652 0 0 0 .018-2.609c.405-.276.78-.594 1.117-.947a5.48 5.48 0 0 1 .44 2.262 7.536 7.536 0 0 1-1.575 1.293Zm-2.172 2.435a9.046 9.046 0 0 1-3.504 0c.039.084.078.166.12.244C6.907 13.114 7.523 13.5 8 13.5s1.091-.386 1.633-1.427c.04-.078.08-.16.12-.244Zm1.31.74a8.5 8.5 0 0 0 .492-1.298c.457-.197.893-.43 1.307-.696a5.526 5.526 0 0 1-1.8 1.995Zm-6.123 0a8.507 8.507 0 0 1-.493-1.298 8.985 8.985 0 0 1-1.307-.696 5.526 5.526 0 0 0 1.8 1.995ZM2.5 8.1c.463.5.993.935 1.575 1.293a12.652 12.652 0 0 1-.018-2.608 7.037 7.037 0 0 1-1.117-.947 5.48 5.48 0 0 0-.44 2.262Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+
+              <span class="text-xs">Asia/Dhaka</span>
+            </div>
+            <div class="flex items-center gap-1 text-gray-600">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 16 16"
+                fill="currentColor"
+                class="size-4 text-blue-500"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8Zm7.75-4.25a.75.75 0 0 0-1.5 0V8c0 .414.336.75.75.75h3.25a.75.75 0 0 0 0-1.5h-2.5v-3.5Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+
+              <span class="text-sm font-medium">10:00 AM - 06:00 PM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Section -->
+      <form class="space-y-2">
+        <!-- Phone Number -->
+        <div class="bg-blue-100 p-4 rounded flex flex-col gap-1">
+          <label for="phone" class="text-gray-700 text-xs"
+            >Phone Number <span class="text-red-500">*</span></label
+          >
+          <div class="flex items-center bg-white p-2 rounded border">
+            <img
+              src="https://flagcdn.com/w40/bd.png"
+              alt="BD Flag"
+              class="h-4 rounded"
+            />
+            <span class="text-gray-700 text-xs px-2">BD +880</span>
+            <input
+              type="text"
+              name="phone"
+              placeholder="1720-000000"
+              class="flex-1 border-none outline-none text-gray-700 text-xs"
+            />
+          </div>
+        </div>
+
+        <!-- Name Fields -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label for="first_name" class="text-gray-700 text-xs"
+              >First Name <span class="text-red-500">*</span></label
+            >
+            <input
+              id="first_name"
+              type="text"
+              class="w-full p-2 border rounded outline-none text-xs"
+              required
+            />
+          </div>
+          <div>
+            <label for="last_name" class="text-gray-700 text-xs"
+              >Last Name <span class="text-red-500">*</span></label
+            >
+            <input
+              id="last_name"
+              type="text"
+              class="w-full p-2 border rounded outline-none text-xs"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Email Field -->
+        <div>
+          <label for="email" class="text-gray-700 text-xs"
+            >Email <span class="text-red-500">*</span></label
+          >
+          <input
+            id="email"
+            type="email"
+            class="w-full p-2 border rounded outline-none text-xs"
+            required
+          />
+        </div>
+
+        <!-- Note Field -->
+        <div>
+          <label for="note" class="text-gray-700 text-xs">Note</label>
+          <textarea
+            name="note"
+            id="note"
+            rows="4"
+            class="w-full p-2 border rounded outline-none text-xs"
+          ></textarea>
+        </div>
+
+        <!-- List of Options to Select -->
+        <div>
+          <label class="text-gray-700 text-xs">Select Your Preferences</label>
+          <div class="flex flex-wrap gap-2 mt-2">
+            <label
+              class="flex items-center gap-1 bg-gray-100 px-3 py-1 rounded text-xs cursor-pointer"
+            >
+              <input
+                type="checkbox"
+                name="preference"
+                value="Option 1"
+                class="size-3.5 rounded"
+              />
+              <span>Option 1</span>
+            </label>
+            <label
+              class="flex items-center gap-1 bg-gray-100 px-3 py-1 rounded text-xs cursor-pointer"
+            >
+              <input
+                type="checkbox"
+                name="preference"
+                value="Option 2"
+                class="size-3.5 rounded"
+              />
+              <span>Option 2</span>
+            </label>
+            <label
+              class="flex items-center gap-1 bg-gray-100 px-3 py-1 rounded text-xs cursor-pointer"
+            >
+              <input
+                type="checkbox"
+                name="preference"
+                value="Option 3"
+                class="size-3.5 rounded"
+              />
+              <span>Option 3</span>
+            </label>
+            <label
+              class="flex items-center gap-1 bg-gray-100 px-3 py-1 rounded text-xs cursor-pointer"
+            >
+              <input
+                type="checkbox"
+                name="preference"
+                value="Option 4"
+                class="size-3.5 rounded"
+              />
+              <span>Option 4</span>
+            </label>
+            <label
+              class="flex items-center gap-1 bg-gray-100 px-3 py-1 rounded text-xs cursor-pointer"
+            >
+              <input
+                type="checkbox"
+                name="preference"
+                value="Option 5"
+                class="size-3.5 rounded"
+              />
+              <span>Option 5</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Single Select Field -->
+        <div>
+          <label for="single_select" class="text-gray-700 text-xs"
+            >Single Select <span class="text-red-500">*</span></label
+          >
+          <select
+            name="single_select"
+            id="single_select"
+            class="w-full p-2 border rounded outline-none text-xs appearance-none"
+            required
+          >
+            <option value="Option 1">Option 1</option>
+            <option value="Option 2">Option 2</option>
+            <option value="Option 3">Option 3</option>
+          </select>
+        </div>
+
+        <!-- Multi Select Field -->
+        <div>
+          <label for="multi_select" class="text-gray-700 text-xs"
+            >Multi Select <span class="text-red-500">*</span></label
+          >
+          <select
+            name="multi_select"
+            id="multi_select"
+            class="w-full p-2 border rounded outline-none text-xs appearance-none"
+            multiple
+            required
+          >
+            <option value="Option 1">Option 01</option>
+            <option value="Option 2">Option 02</option>
+            <option value="Option 3">Option 03</option>
+            <option value="Option 4">Option 04</option>
+            <option value="Option 5">Option 05</option>
+          </select>
+        </div>
+
+        <!-- Terms and Conditions -->
+        <div class="flex items-center gap-1">
+          <input name="checkbox" type="checkbox" class="size-3.5 rounded" />
+          <label for="checkbox" class="text-gray-700 text-xs"
+            >Agree with
+            <a
+              href="https://crm.michiley.com/terms-of-services"
+              class="text-blue-500 hover:underline transition-all"
+              >terms and conditions</a
+            ></label
+          >
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex items-center justify-end gap-2">
+          <button
+            type="button"
+            class="bg-gray-300 px-4 py-2 rounded text-gray-700 text-xs"
+          >
+            Back
+          </button>
+          <button
+            type="submit"
+            class="bg-blue-600 px-4 py-2 rounded text-white text-xs"
+          >
+            Confirm Booking
+          </button>
+        </div>
+      </form>
+
+      <!-- Footer -->
+      <div class="text-center text-gray-500 text-xs">
+        Powered by <a href="#" class="text-blue-500 font-semibold">Exkoo</a>
+      </div>
+    </div>
+  </body>
+</html>

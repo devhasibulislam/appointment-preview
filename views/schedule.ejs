@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exkoo CRM - Appointment Preview</title>
+
+    <!-- Google Fonts (Poppins) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS CDN (v4.0.0) -->
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+
+    <!-- Custom CSS -->
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gray-100 p-6 flex flex-col justify-center items-center h-screen w-screen"
+  >
+    <div class="w-lg bg-white rounded-lg shadow-md p-6 flex flex-col gap-6">
+      <!-- Profile Section -->
+      <div class="flex items-center gap-2">
+        <img
+          src="<%= bookingData.profileLogo %>"
+          alt="Profile"
+          class="w-12 h-12 rounded-full object-cover"
+        />
+        <div class="flex flex-col">
+          <h2 class="text-lg font-semibold">
+            <%= bookingData.bookingPageTitle %>
+          </h2>
+          <p class="text-gray-500 text-sm">
+            <%= bookingData.bookingPageIntro %>
+          </p>
+        </div>
+      </div>
+
+      <!-- Horizontal Line -->
+      <hr class="border-t border-gray-200" />
+
+      <!-- Available Date & Days Section -->
+      <div class="flex flex-col gap-4">
+        <!-- Date Selection -->
+        <div class="flex justify-between items-center gap-2">
+          <button
+            id="todayBtn"
+            type="button"
+            class="px-4 py-1 text-blue-500 border border-blue-500 text-xs rounded cursor-pointer hover:bg-blue-500 hover:text-white transition-colors"
+          >
+            Today
+          </button>
+          <p id="dateDisplay" class="text-gray-700 text-xs font-semibold"></p>
+        </div>
+
+        <!-- Available Days -->
+        <div class="flex items-center gap-4 overflow-x-scroll">
+          <% let availableDays = bookingData.timetableAvailability;
+          availableDays.forEach(dayData => { let dayName = dayData.day.slice(0,
+          3).toUpperCase(); let slots = dayData.timeSlots.length; let slotColor
+          = slots === 0 ? 'text-red-500' : slots <= 3 ? 'text-orange-500' :
+          'text-green-500'; %>
+          <div
+            class="border rounded px-4 py-2 h-full w-full flex flex-col gap-4 hover:border-blue-500 hover:bg-blue-100/50 transition-colors cursor-pointer"
+          >
+            <div class="flex flex-col items-center gap-1">
+              <p class="font-medium text-xs whitespace-nowrap">
+                <%= dayName %>
+              </p>
+              <p class="text-blue-600 font-bold whitespace-nowrap text-base">
+                <%= slots %>
+              </p>
+            </div>
+            <p
+              class="text-xs <%= slotColor %> whitespace-nowrap mt-auto text-center"
+            >
+              <%= slots %> slots
+            </p>
+          </div>
+          <% }); %>
+        </div>
+      </div>
+
+      <!-- Time Selection -->
+      <div class="flex flex-col gap-4">
+        <!-- Timezone and Duration -->
+        <div class="flex justify-between items-center text-sm text-gray-600">
+          <p class="text-xs text-blue-500 font-medium">Asia/Dhaka</p>
+          <p class="flex items-center gap-0.5 text-xs">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              class="size-4 text-blue-500"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8Zm7.75-4.25a.75.75 0 0 0-1.5 0V8c0 .414.336.75.75.75h3.25a.75.75 0 0 0 0-1.5h-2.5v-3.5Z"
+                clip-rule="evenodd"
+              />
+            </svg>
+
+            2 hour meeting
+          </p>
+        </div>
+
+        <!-- Time Slots Container -->
+        <div id="timeSlotContainer" class="grid grid-cols-3 gap-2"></div>
+      </div>
+
+      <!-- Footer -->
+      <p class="text-center text-gray-500 text-xs">
+        Powered by
+        <a
+          href="https://crm.michiley.com/"
+          class="text-blue-500 hover:underline transition-all"
+          >Exkoo</a
+        >
+      </p>
+    </div>
+
+    <script>
+            document.addEventListener("DOMContentLoaded", function () {
+        const bookingData = <%- JSON.stringify(bookingData) %>; // Embed booking data
+        const dayCards = document.querySelectorAll(".border.rounded.px-4.py-2");
+        const timeSlotContainer = document.getElementById("timeSlotContainer");
+        const todayBtn = document.getElementById("todayBtn");
+        const dateDisplay = document.getElementById("dateDisplay");
+
+        // Hide time slots initially
+        timeSlotContainer.style.display = "none";
+
+        // Get today's day in uppercase (e.g., "MON", "TUE")
+        const today = new Date().toLocaleDateString("en-US", { weekday: "short" }).toUpperCase();
+
+        // Find today's availability from `bookingData`
+        const todayData = bookingData.timetableAvailability.find(day => day.day.slice(0, 3).toUpperCase() === today);
+
+        // Disable today button if today is not available
+        if (!todayData) {
+          todayBtn.disabled = true;
+          todayBtn.classList.add("opacity-50", "cursor-not-allowed");
+        }
+
+        // Function to clear active states
+        function clearActiveStates() {
+          dayCards.forEach(card => {
+            card.classList.remove("border-blue-500", "bg-blue-100/50");
+          });
+        }
+
+        // Function to display time slots
+        function displayTimeSlots(dayData) {
+          if (!dayData || dayData.timeSlots.length === 0) {
+            timeSlotContainer.style.display = "none"; // Hide time slots if unavailable
+            return;
+          }
+
+          timeSlotContainer.innerHTML = ""; // Clear previous slots
+          timeSlotContainer.style.display = "grid"; // Show time slots container
+
+          dayData.timeSlots.forEach(slot => {
+            const button = document.createElement("button");
+            button.classList.add(
+              "p-2", "border", "rounded", "bg-blue-100/50", "text-sm",
+              "hover:bg-blue-500", "hover:text-white", "transition-colors",
+              "cursor-pointer"
+            );
+
+            // Add disabled state if booked
+            if (slot.isBooked) {
+              button.classList.add("opacity-50", "cursor-not-allowed");
+              button.disabled = true;
+            }
+
+            button.textContent = slot.startTime;
+            timeSlotContainer.appendChild(button);
+          });
+        }
+
+        // Today button event
+        todayBtn.addEventListener("click", function () {
+          if (!todayData) return; // Stop if no available slots today
+
+          // Highlight today's date card
+          clearActiveStates();
+          dayCards.forEach(card => {
+            if (card.querySelector(".font-medium").textContent.trim() === today) {
+              card.classList.add("border-blue-500", "bg-blue-100/50");
+            }
+          });
+
+          // Update date display
+          dateDisplay.textContent = new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
+
+          // Show today's time slots
+          displayTimeSlots(todayData);
+        });
+
+        // Event listener for manual date selection
+        dayCards.forEach(card => {
+          card.addEventListener("click", function () {
+            const selectedDay = card.querySelector(".font-medium").textContent.trim();
+
+            // Find the selected day's time slots
+            const dayData = bookingData.timetableAvailability.find(day =>
+              day.day.startsWith(selectedDay)
+            );
+
+            if (dayData) {
+              clearActiveStates();
+              card.classList.add("border-blue-500", "bg-blue-100/50");
+              displayTimeSlots(dayData);
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
