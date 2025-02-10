@@ -115,8 +115,6 @@ app.get("/form", async (req, res) => {
     // Add the slots as timeSlotIds in bookingData
     bookingData.timeSlotIds = slots;
 
-    console.log(bookingData);
-
     res.render("form", { bookingData }); // Pass data to EJS
   } catch (error) {
     console.error("GraphQL Error:", error);
