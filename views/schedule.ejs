@@ -125,6 +125,15 @@
           >Exkoo</a
         >
       </p>
+
+      <!-- Submit Button -->
+      <a
+        id="submitButton"
+        href="#"
+        class="bg-blue-500 text-white px-4 py-2 rounded-md text-center hover:bg-blue-600 transition-colors hidden"
+      >
+        Proceed to Form
+      </a>
     </div>
 
     <script>
@@ -135,7 +144,10 @@
         const timeSlotContainer = document.getElementById("timeSlotContainer");
         const todayBtn = document.getElementById("todayBtn");
         const dateDisplay = document.getElementById("dateDisplay");
+        const submitButton = document.getElementById("submitButton");
         let selectedSlots = []; // Store selected slots
+        let selectedDay = "";
+        let selectedDate = "";
 
         timeSlotContainer.style.display = "none";
 
@@ -201,6 +213,23 @@
               button.classList.remove("bg-blue-100/50");
             }
           }
+
+          updateSubmitButton();
+        }
+
+        function updateSubmitButton() {
+          if (selectedSlots.length > 0 && selectedDay && selectedDate) {
+            submitButton.classList.remove("hidden");
+            const queryParams = new URLSearchParams({
+              bookingId: "67911408f8a7d4ee3ef101a6",
+              slots: selectedSlots.join(","),
+              date: selectedDate,
+              day: selectedDay,
+            });
+            submitButton.href = `/form?${queryParams.toString()}`;
+          } else {
+            submitButton.classList.add("hidden");
+          }
         }
 
         todayBtn.addEventListener("click", function () {
@@ -212,21 +241,28 @@
             }
           });
 
-          dateDisplay.textContent = new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
+          selectedDate = new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
+          selectedDay = today;
+          dateDisplay.textContent = selectedDate;
           displayTimeSlots(todayData);
+          updateSubmitButton();
         });
 
         dayCards.forEach(card => {
           card.addEventListener("click", function () {
-            const selectedDay = card.querySelector(".font-medium").textContent.trim();
+            const dayName = card.querySelector(".font-medium").textContent.trim();
             const dayData = bookingData.timetableAvailability.find(day =>
-              day.day.startsWith(selectedDay)
+              day.day.startsWith(dayName)
             );
 
             if (dayData) {
               clearActiveStates();
               card.classList.add("border-blue-500", "bg-blue-100/50");
+              selectedDay = dayName;
+              selectedDate = new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
+              dateDisplay.textContent = selectedDate;
               displayTimeSlots(dayData);
+              updateSubmitButton();
             }
           });
         });
