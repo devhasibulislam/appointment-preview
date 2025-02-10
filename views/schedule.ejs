@@ -145,7 +145,7 @@
         const todayBtn = document.getElementById("todayBtn");
         const dateDisplay = document.getElementById("dateDisplay");
         const submitButton = document.getElementById("submitButton");
-        let selectedSlots = []; // Store selected slots
+        let selectedSlots = []; // Store selected slots (by _id)
         let selectedDay = "";
         let selectedDate = "";
 
@@ -189,7 +189,7 @@
             }
 
             button.textContent = slot.startTime;
-            button.dataset.startTime = slot.startTime; // Store time for tracking
+            button.dataset.slotId = slot._id; // Store _id for tracking
 
             button.addEventListener("click", function () {
               handleSlotSelection(button);
@@ -200,15 +200,15 @@
         }
 
         function handleSlotSelection(button) {
-          const slotTime = button.dataset.startTime;
+          const slotId = button.dataset.slotId;
 
-          if (selectedSlots.includes(slotTime)) {
-            selectedSlots = selectedSlots.filter(time => time !== slotTime);
+          if (selectedSlots.includes(slotId)) {
+            selectedSlots = selectedSlots.filter(id => id !== slotId);
             button.classList.remove("bg-blue-500", "text-white");
             button.classList.add("bg-blue-100/50");
           } else {
             if (selectedSlots.length < selectSlotBookingCapacity) {
-              selectedSlots.push(slotTime);
+              selectedSlots.push(slotId);
               button.classList.add("bg-blue-500", "text-white");
               button.classList.remove("bg-blue-100/50");
             }
@@ -222,7 +222,7 @@
             submitButton.classList.remove("hidden");
             const queryParams = new URLSearchParams({
               bookingId: "67911408f8a7d4ee3ef101a6",
-              slots: selectedSlots.join(","),
+              slots: selectedSlots.join(","), // Pass slot _ids
               date: selectedDate,
               day: selectedDay,
             });

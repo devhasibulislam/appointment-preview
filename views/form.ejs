@@ -43,7 +43,12 @@
       </div>
 
       <!-- Dynamic Form -->
-      <form id="dynamicForm" class="space-y-2">
+      <form
+        id="dynamicForm"
+        class="space-y-2"
+        method="POST"
+        action="http://crm.michiley.com/api/<%= bookingData._id %>/<%= bookingData.bookingPageLink.split('/').pop() %>"
+      >
         <div id="formContainer" class="grid grid-cols-2 gap-4"></div>
 
         <!-- Submit Button -->
