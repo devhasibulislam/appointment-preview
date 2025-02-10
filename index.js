@@ -64,8 +64,53 @@ app.get("/schedule", async (req, res) => {
   }
 });
 
-app.get("/form", (req, res) => {
-  res.render("form");
+app.get("/form", async (req, res) => {
+  const bookingId = req.query.bookingId || "67911408f8a7d4ee3ef101a6"; // Default ID
+
+  const query = gql`
+    query GetBooking($getBookingId: ID!) {
+      getBooking(id: $getBookingId) {
+        acknowledgement
+        description
+        statusCode
+        message
+        data {
+          bookingPageIntro
+          bookingPageTitle
+          profileLogo
+          selectSlotBookingCapacity
+          howLongMeetingFor
+          bookingQuestion {
+            _id
+            label
+            shortCode
+            type
+            required
+            defaultValue
+            options {
+              option
+              fields
+            }
+            placeholder
+            min
+            max
+            size
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+    const variables = { getBookingId: bookingId };
+    const jsonData = await client.request(query, variables);
+    const bookingData = jsonData.getBooking.data;
+
+    res.render("form", { bookingData }); // Pass data to EJS
+  } catch (error) {
+    console.error("GraphQL Error:", error);
+    res.render("error", { error });
+  }
 });
 
 app.get("/error", (req, res) => {
