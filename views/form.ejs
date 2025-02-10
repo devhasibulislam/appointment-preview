@@ -47,10 +47,45 @@
         id="dynamicForm"
         class="space-y-2"
         method="POST"
-        action="http://crm.michiley.com/api/<%= bookingData._id %>/<%= bookingData.bookingPageLink.split('/').pop() %>"
+        action="http://crm.michiley.com/api/booking/<%= bookingData._id %>/<%= bookingData.bookingPageLink.split('/').pop() %>"
       >
-        <div id="formContainer" class="grid grid-cols-2 gap-4"></div>
+        <div id="formContainer" class="grid grid-cols-2 gap-4">
+          <% bookingData.bookingQuestion.forEach((question) => { %>
+            <div class="w-full <%= question.size === '50%' ? 'col-span-1' : 'col-span-2' %>">
+              <label for="<%= question.shortCode %>" class="text-gray-700 text-xs">
+                <%= question.label %>
+                <% if (question.required) { %>
+                  <span class="text-red-500">*</span>
+                <% } %>
+              </label>
+              <% if (["TEXT", "EMAIL", "TEL"].includes(question.type)) { %>
+                <input 
+                  type="<%= question.type.toLowerCase() %>" 
+                  id="<%= question.shortCode %>" 
+                  name="personalInformation.<%= question.shortCode %>.<%= question.label %>"
+                  placeholder="<%= question.placeholder || '' %>"
+                  value="<%= question.defaultValue || '' %>"
+                  <%= question.required ? 'required' : '' %>
+                  class="w-full p-2 border rounded outline-none text-xs"
+                />
+              <% } else if (question.type === "SELECT" && question.options.fields.length) { %>
+                <select 
+                  id="<%= question.shortCode %>" 
+                  name="personalInformation.<%= question.shortCode %>.<%= question.label %>"
+                  <%= question.required ? 'required' : '' %>
+                  class="w-full p-2 border rounded outline-none text-xs"
+                >
+                  <% question.options.fields.forEach(option => { %>
+                    <option value="<%= option %>"><%= option %></option>
+                  <% }) %>
+                </select>
+              <% } %>
+            </div>
+          <% }) %>
+        </div>
 
+        <input type="hidden" name="timeSlotIds" id="timeSlotIds" value='<%= JSON.stringify(bookingData.timeSlotIds || []) %>' />
+        
         <!-- Submit Button -->
         <div class="flex justify-end gap-2">
           <button
@@ -76,62 +111,38 @@
       </div>
     </div>
 
-    <script>
+    <!-- <script>
       document.addEventListener("DOMContentLoaded", function () {
-        const bookingData = <%- JSON.stringify(bookingData || {}) %>; // Ensure it is not undefined
-        const formContainer = document.getElementById("formContainer");
-
-        if (!bookingData.bookingQuestion) {
-          console.error("No booking questions available.");
-          return;
-        }
-
-        bookingData.bookingQuestion.forEach(question => {
-          const fieldWrapper = document.createElement("div");
-          fieldWrapper.classList.add("w-full");
-
-          if (question.size === "50%") {
-            fieldWrapper.classList.add("col-span-1");
-          } else {
-            fieldWrapper.classList.add("col-span-2");
-          }
-
-          // Label
-          const label = document.createElement("label");
-          label.setAttribute("for", question.shortCode);
-          label.classList.add("text-gray-700", "text-xs");
-          label.textContent = question.label;
-          if (question.required) {
-            label.innerHTML += ' <span class="text-red-500">*</span>';
-          }
-
-          let input;
-          if (["TEXT", "EMAIL", "TEL"].includes(question.type)) {
-            input = document.createElement("input");
-            input.type = question.type.toLowerCase();
-            input.placeholder = question.placeholder || "";
-            input.value = question.defaultValue || "";
-          } else if (question.type === "SELECT" && question.options.fields.length) {
-            input = document.createElement("select");
-            question.options.fields.forEach(option => {
-              const optionElement = document.createElement("option");
-              optionElement.value = option;
-              optionElement.textContent = option;
-              input.appendChild(optionElement);
-            });
-          }
-
-          input.id = question.shortCode;
-          input.name = question.shortCode;
-          input.required = question.required;
-          input.classList.add("w-full", "p-2", "border", "rounded", "outline-none", "text-xs");
-
-          // Append elements
-          fieldWrapper.appendChild(label);
-          fieldWrapper.appendChild(input);
-          formContainer.appendChild(fieldWrapper);
+        const form = document.getElementById("dynamicForm");
+    
+        form.addEventListener("submit", function (event) {
+          event.preventDefault(); // Prevent default form submission (page refresh)
+    
+          const formData = new FormData(form);
+          const payload = {};
+    
+          formData.forEach((value, key) => {
+            payload[key] = value;
+          });
+    
+          console.log("Form Payload:", payload);
+    
+          // OPTIONAL: If you want to send the data via fetch instead of a full page reload
+          fetch(form.action, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          })
+            .then((response) => response.json())
+            .then((data) => console.log("Response:", data))
+            .catch((error) => console.error("Error:", error));
+    
+          // Uncomment the next line if you want the form to submit normally after logging
+          // form.submit();
         });
       });
-    </script>
+    </script>     -->
   </body>
 </html>

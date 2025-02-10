@@ -53,7 +53,8 @@ app.get("/schedule", async (req, res) => {
   `;
 
   try {
-    const variables = { getBookingId: "67911408f8a7d4ee3ef101a6" };
+    // const variables = { getBookingId: "67911408f8a7d4ee3ef101a6" };
+    const variables = { getBookingId: "67aa2dced9d6f2ab41fcb8c7" };
     const jsonData = await client.request(query, variables);
     const bookingData = jsonData.getBooking.data;
 
@@ -75,11 +76,13 @@ app.get("/form", async (req, res) => {
         statusCode
         message
         data {
+          _id
           bookingPageIntro
           bookingPageTitle
           profileLogo
           selectSlotBookingCapacity
           howLongMeetingFor
+          bookingPageLink
           bookingQuestion {
             _id
             label
@@ -105,6 +108,14 @@ app.get("/form", async (req, res) => {
     const variables = { getBookingId: bookingId };
     const jsonData = await client.request(query, variables);
     const bookingData = jsonData.getBooking.data;
+
+    // Extract slots from the query parameters
+    const slots = req.query.slots ? req.query.slots.split(",") : [];
+
+    // Add the slots as timeSlotIds in bookingData
+    bookingData.timeSlotIds = slots;
+
+    console.log(bookingData);
 
     res.render("form", { bookingData }); // Pass data to EJS
   } catch (error) {
