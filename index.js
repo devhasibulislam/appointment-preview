@@ -55,7 +55,7 @@ app.get("/schedule", async (req, res) => {
 
   try {
     // const variables = { getBookingId: "67911408f8a7d4ee3ef101a6" };
-    const variables = { getBookingId: "67aceaa671dc535068623043" };
+    const variables = { getBookingId: "67ad91ac8da1ad06d794a38a" };
     const jsonData = await client.request(query, variables);
     const bookingData = jsonData.getBooking.data;
 
