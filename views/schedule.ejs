@@ -26,7 +26,9 @@
   <body
     class="bg-gray-100 p-6 flex flex-col justify-center items-center h-screen w-screen"
   >
-    <div class="w-lg bg-white rounded-lg shadow-md p-6 flex flex-col gap-6">
+    <div
+      class="w-full md:w-lg bg-white rounded-lg shadow-md p-6 flex flex-col gap-6"
+    >
       <!-- Profile Section -->
       <div class="flex items-center gap-2">
         <img
@@ -62,7 +64,7 @@
         </div>
 
         <!-- Available Days -->
-        <div class="flex items-center gap-4 overflow-x-scroll">
+        <div class="flex items-center gap-4 overflow-x-auto">
           <% let availableDays = bookingData.timetableAvailability;
           availableDays.forEach(dayData => { let dayName = dayData.day.slice(0,
           3).toUpperCase(); let slots = dayData.timeSlots.length; let slotColor
@@ -113,7 +115,10 @@
         </div>
 
         <!-- Time Slots Container -->
-        <div id="timeSlotContainer" class="grid grid-cols-3 gap-2"></div>
+        <div
+          id="timeSlotContainer"
+          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2"
+        ></div>
       </div>
 
       <!-- Footer -->
@@ -221,7 +226,7 @@
           if (selectedSlots.length > 0 && selectedDay && selectedDate) {
             submitButton.classList.remove("hidden");
             const queryParams = new URLSearchParams({
-              bookingId: "67911408f8a7d4ee3ef101a6",
+              bookingId: bookingData._id,
               slots: selectedSlots.join(","), // Pass slot _ids
               date: selectedDate,
               day: selectedDay,

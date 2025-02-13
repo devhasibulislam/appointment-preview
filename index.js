@@ -34,6 +34,7 @@ app.get("/schedule", async (req, res) => {
         statusCode
         message
         data {
+          _id
           bookingPageIntro
           bookingPageTitle
           profileLogo
@@ -54,7 +55,7 @@ app.get("/schedule", async (req, res) => {
 
   try {
     // const variables = { getBookingId: "67911408f8a7d4ee3ef101a6" };
-    const variables = { getBookingId: "67aa2dced9d6f2ab41fcb8c7" };
+    const variables = { getBookingId: "67aceaa671dc535068623043" };
     const jsonData = await client.request(query, variables);
     const bookingData = jsonData.getBooking.data;
 
@@ -66,7 +67,7 @@ app.get("/schedule", async (req, res) => {
 });
 
 app.get("/form", async (req, res) => {
-  const bookingId = req.query.bookingId || "67911408f8a7d4ee3ef101a6"; // Default ID
+  const bookingId = req.query.bookingId || "67aceaa671dc535068623043"; // Default ID
 
   const query = gql`
     query GetBooking($getBookingId: ID!) {
